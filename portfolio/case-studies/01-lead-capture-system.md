@@ -32,3 +32,5 @@ A real estate agent using this system would have every inbound lead automaticall
 - Connect to a real, public-facing form (in progress — currently tested via webhook simulation, pending cloud deployment)
 - Add automatic lead scoring/prioritization (e.g. flagging urgent language)
 - Add automatic follow-up sequencing for leads that go quiet
+## How I'd Explain This to a Client
+"Right now, when a lead messages you through a channel, traditionally the lead info has to be extracted manually and typed into a CRM — which takes time, and can result in that lead going cold or not being converted efficiently. This system does all of that automatically: the second a message comes in, it reads it, pulls out their name, phone, what property they're interested in, their budget, and their timeline — and saves it straight into an organized database."

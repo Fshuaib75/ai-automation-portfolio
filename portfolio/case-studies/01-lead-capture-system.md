@@ -1,36 +1,53 @@
 # AI-Powered Lead Capture & Enrichment System
 
-## The Problem
-Real estate agents lose a significant share of leads simply because they can't respond fast enough. When a buyer or seller reaches out — through a website form, WhatsApp, or a Zillow-style lead feed — even a few hours of delay can mean the lead moves on to a competitor. Manually reading, categorizing, and logging every incoming message into a CRM also eats hours agents don't have.
+**Tech Stack:** Python · n8n · OpenAI API · SQL/Airtable · JSON
 
-## The Solution
-I built an automated pipeline that instantly captures, understands, and stores incoming leads with zero manual work:
+---
 
-1. **Webhook trigger** — any external system (a website form, WhatsApp, a lead feed) can send a message to a live endpoint, triggering the automation instantly, 24/7.
-2. **AI extraction** — an LLM (GPT-4o-mini), guided by a carefully engineered prompt with few-shot examples, reads the raw, messy message and extracts structured data: name, phone number, property of interest, budget, and timeline.
-3. **Data parsing** — a lightweight processing step converts the AI's structured JSON response into clean, individual fields.
-4. **Database storage** — the parsed lead is automatically saved as a new record in an Airtable database, ready for the agent to review, sort, or follow up on.
+## Problem
+How can incoming lead messages be automatically converted into structured, usable records — without manual data entry?
 
-## Technical Details
-- **Stack**: n8n (workflow orchestration), OpenAI API (GPT-4o-mini), Airtable (data storage)
-- **Prompt engineering**: uses few-shot examples to handle edge cases reliably — for example, correctly distinguishing a lead's own information from other people they mention in the same message (e.g. "my brother might also be interested...")
-- **Tested with**: realistic, messy, casually-written lead messages simulating real customer behavior
+Real estate agents (and similar client-facing businesses) lose deals simply because they can't respond to inbound leads fast enough. Every message — from a website form, WhatsApp, or a lead feed — has to be read, interpreted, and manually logged into a CRM before any follow-up can happen. That delay costs real business.
 
-## Example
-**Input** (raw message):
+## Architecture
+ **Webhook** — a live endpoint that any external system (form, WhatsApp, lead feed) can send a message to, triggering the pipeline instantly
+2. **OpenAI (few-shot prompted)** — reads the raw, unstructured message and extracts structured fields: name, phone, property of interest, budget, timeline
+3. **Code node** — parses the AI's JSON response, with a try/catch safety net for malformed output
+4. **Conditional branch (IF node)** — routes clean, validated data to storage; routes failed/invalid data to a separate path instead of silently breaking or corrupting the database
+5. **Airtable** — the extracted lead lands as a permanent, organized record, ready for follow-up
+
+## Tech Stack
+| Layer | Tools |
+|---|---|
+| Orchestration | n8n |
+| AI / Extraction | OpenAI API (GPT-4o-mini), few-shot prompt engineering |
+| Data parsing | JavaScript (Code node) |
+| Storage | Airtable |
+| Version control | Git / GitHub |
+
+## Features
+- ✓ Structured data extraction from unstructured text
+- ✓ Prompt engineering with few-shot examples for edge-case reliability
+- ✓ Input/output validation
+- ✓ Error handling (try/catch parsing)
+- ✓ Conditional workflow branching (clean vs. failed data)
+- ✓ Persistent database storage
+
+## Example Input
 > "hi its dave, interested in the maple street listing, budget 400k, my number is 555-0192"
 
-**Output** (automatically saved to database):
+## Example Output
 | Name | Phone | Property Interest | Budget | Timeline |
 |---|---|---|---|---|
 | dave | 555-0192 | maple street listing | 400k | — |
 
-## Result
-A real estate agent using this system would have every inbound lead automatically captured, categorized, and stored — with zero manual data entry, and response times limited only by how fast they check their database, not how fast they can parse a messy text message.
+## What I Learned
+- **Prompt reliability requires examples, not just instructions.** An early version of this prompt correctly extracted data but occasionally confused two people mentioned in the same message (e.g., a lead and their sibling). Adding few-shot examples showing the correct behavior fixed this — instructions alone left too much room for interpretation.
+- **Real systems fail in unpredictable ways.** The AI occasionally wrapped its JSON output in markdown code fences, breaking strict JSON parsing — an edge case I hadn't anticipated. The try/catch handling caught it exactly as intended instead of crashing the pipeline, and I fixed the root cause at two layers: tightening the prompt and making the parser more defensive.
+- **Debugging environment issues is a real, transferable skill.** Working through Docker/WSL networking quirks, lost credentials, and file-location mixups during development built genuine troubleshooting instincts, not just "the happy path."
 
-## What's Next
-- Connect to a real, public-facing form (in progress — currently tested via webhook simulation, pending cloud deployment)
-- Add automatic lead scoring/prioritization (e.g. flagging urgent language)
-- Add automatic follow-up sequencing for leads that go quiet
 ## How I'd Explain This to a Client
-"Right now, when a lead messages you through a channel, traditionally the lead info has to be extracted manually and typed into a CRM — which takes time, and can result in that lead going cold or not being converted efficiently. This system does all of that automatically: the second a message comes in, it reads it, pulls out their name, phone, what property they're interested in, their budget, and their timeline — and saves it straight into an organized database."
+"Right now, when a lead messages you through a channel, the lead info traditionally has to be extracted manually and typed into a CRM — which takes time and can result in that lead going cold or not being converted efficiently. This system does all of that automatically: the second a message comes in, it reads it, pulls out their name, phone, what property they're interested in, their budget, and their timeline — and saves it straight into an organized database."
+
+## Repository
+[github.com/Fshuaib75/ai-automation-portfolio](https://github.com/Fshuaib75/ai-automation-portfolio)

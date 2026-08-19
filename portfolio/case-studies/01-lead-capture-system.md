@@ -1,10 +1,5 @@
-1. **Webhook** — a live endpoint that any external system (form, WhatsApp, lead feed) can send a message to, triggering the pipeline instantly
-2. **OpenAI (few-shot prompted)** — reads the raw, unstructured message and extracts structured fields: name, phone, property of interest, budget, timeline
-3. **Code node** — parses the AI's JSON response, with a try/catch safety net for malformed output
-4. **Conditional branch (IF node)** — routes clean, validated data to storage; routes failed/invalid data to a separate path instead of silently breaking or corrupting the database
-5. **Airtable** — the extracted lead lands as a permanent, organized record, ready for follow-up
+# AI-Powered Lead Capture & Enrichment System
 
-<<<<<<< HEAD
 **Tech Stack:** Python · n8n · OpenAI API · SQL/Airtable · JSON
 
 ---
@@ -15,7 +10,8 @@ How can incoming lead messages be automatically converted into structured, usabl
 Real estate agents (and similar client-facing businesses) lose deals simply because they can't respond to inbound leads fast enough. Every message — from a website form, WhatsApp, or a lead feed — has to be read, interpreted, and manually logged into a CRM before any follow-up can happen. That delay costs real business.
 
 ## Architecture
- **Webhook** — a live endpoint that any external system (form, WhatsApp, lead feed) can send a message to, triggering the pipeline instantly
+Webhook (trigger) → OpenAI (extraction) → Code node (validation/parsing) → Conditional branch → Airtable (storage)
+1. **Webhook** — a live endpoint that any external system (form, WhatsApp, lead feed) can send a message to, triggering the pipeline instantly
 2. **OpenAI (few-shot prompted)** — reads the raw, unstructured message and extracts structured fields: name, phone, property of interest, budget, timeline
 3. **Code node** — parses the AI's JSON response, with a try/catch safety net for malformed output
 4. **Conditional branch (IF node)** — routes clean, validated data to storage; routes failed/invalid data to a separate path instead of silently breaking or corrupting the database
@@ -38,25 +34,6 @@ Real estate agents (and similar client-facing businesses) lose deals simply beca
 - ✓ Conditional workflow branching (clean vs. failed data)
 - ✓ Persistent database storage
 
-=======
-## Tech Stack
-| Layer | Tools |
-|---|---|
-| Orchestration | n8n |
-| AI / Extraction | OpenAI API (GPT-4o-mini), few-shot prompt engineering |
-| Data parsing | JavaScript (Code node) |
-| Storage | Airtable |
-| Version control | Git / GitHub |
-
-## Features
-- ✓ Structured data extraction from unstructured text
-- ✓ Prompt engineering with few-shot examples for edge-case reliability
-- ✓ Input/output validation
-- ✓ Error handling (try/catch parsing)
-- ✓ Conditional workflow branching (clean vs. failed data)
-- ✓ Persistent database storage
-
->>>>>>> a6b229797caea65258c994bfecf9060db52358e2
 ## Example Input
 > "hi its dave, interested in the maple street listing, budget 400k, my number is 555-0192"
 
@@ -74,8 +51,4 @@ Real estate agents (and similar client-facing businesses) lose deals simply beca
 "Right now, when a lead messages you through a channel, the lead info traditionally has to be extracted manually and typed into a CRM — which takes time and can result in that lead going cold or not being converted efficiently. This system does all of that automatically: the second a message comes in, it reads it, pulls out their name, phone, what property they're interested in, their budget, and their timeline — and saves it straight into an organized database."
 
 ## Repository
-<<<<<<< HEAD
 [github.com/Fshuaib75/ai-automation-portfolio](https://github.com/Fshuaib75/ai-automation-portfolio)
-=======
-[github.com/Fshuaib75/ai-automation-portfolio](https://github.com/Fshuaib75/ai-automation-portfolio)
->>>>>>> a6b229797caea65258c994bfecf9060db52358e2
